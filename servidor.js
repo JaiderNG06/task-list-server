@@ -1,14 +1,21 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
+const router1 = require('./list-view-router');
+const router2 = require('./list-edit-router');
 
-const tareas = [
-    { id: 1, description: 'Hacer la compra', completed: false },
-    { id: 2, description: 'Estudiar para el examen', completed: true },
-    { id: 3, description: 'Hacer ejercicio', completed: false },
-  ];
-  
+
+
+app.get('/tareas', (req, res) => {
+  res.json(tareas);
+});
+
+
+
+app.use( "/list", router1);
+app.use( "/list", router2);
+
+
 app.listen(PORT, () => {
-    console.log(`Servidor iniciado en el http://localhost:3000`);
-  });
-  
+  console.log(`Servidor iniciado en el http://localhost:3000`);
+});
