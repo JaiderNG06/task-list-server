@@ -1,21 +1,26 @@
 const express = require('express');
 const app = express();
 const PORT = 3000;
-const router1 = require('./list-view-router');
-const router2 = require('./list-edit-router');
+const router1 = require('./Enrutadores/list-view-router');
+const router2 = require('./Enrutadores/list-edit-router');
 
 
+const validarMetodo = ['GET', 'POST', 'PUT', 'DELETE'];
 
-app.get('/tareas', (req, res) => {
-  res.json(tareas);
-});
+const validacion = (req, res, next) => {
+  if (!validarMetodo.includes(req.method)) {
+    return res.status(400).json({ error: 'Método HTTP no válido.' });
+  }
+  next();
+};
 
-
-
-app.use( "/list", router1);
-app.use( "/list", router2);
-
+app.use(validacion);
+app.use(express.json());
+app.use("/list", router1);
+app.use("/list", router2);
 
 app.listen(PORT, () => {
-  console.log(`Servidor iniciado en el http://localhost:3000`);
+  console.log(`Servidor iniciado en el http://localhost:${PORT}`);
 });
+
+module.exports = app;
